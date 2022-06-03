@@ -19,6 +19,7 @@
     "cdk8s": "^2.3.14",
     "cdk8s-plus-23": "^2.0.0-rc.4",
     "constructs": "^10.1.25",
+    "dotenv": "^16.0.1",
     "prettier": "^2.6.2"
   },
   "devDependencies": {

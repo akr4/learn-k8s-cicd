@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -eu -o pipefail
+
+basedir=$(cd $(dirname "$0")/..; pwd)
+values_env=${basedir}/values/values-${ENVIRONMENT}.env
+secrets_env=$(mktemp)
+secrets_enc_env=${basedir}/values/secrets-${ENVIRONMENT}.enc.env
+
+sops -d ${secrets_enc_env} > ${secrets_env} && \
+  npm run compile && \
+  VALUES_FILE=${values_env} \
+  SECRETS_FILE=${secrets_env} \
+    cdk8s synth && \
+  rm ${secrets_env} && \
+  kubectl apply -f dist
+

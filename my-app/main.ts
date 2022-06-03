@@ -1,111 +1,59 @@
 import { Construct } from "constructs";
-import { App, Chart, ChartProps } from "cdk8s";
-import {
-  KubeConfigMap,
-  KubeDeployment,
-  KubeSecret,
-  KubeService,
-} from "./imports/k8s";
+import * as cdk8s from "cdk8s";
+import * as kplus from "cdk8s-plus-23";
+import {loadSecretsFile, loadValuesFile} from "./values";
 
-export class MyChart extends Chart {
-  constructor(scope: Construct, id: string, props: ChartProps = {}) {
+export class MyChart extends cdk8s.Chart {
+  constructor(scope: Construct, id: string, props: cdk8s.ChartProps = {}) {
     super(scope, id, props);
 
-    const label = { app: "my-app" };
 
-    new KubeConfigMap(this, "configmap", {
+    const config = new kplus.ConfigMap(this, "config", {
       metadata: {
         name: "main",
       },
-      data: {
-        configmapKey: "value from configmap",
-      },
+      data: loadValuesFile(),
     });
 
-    new KubeSecret(this, "secret", {
+    const secret = new kplus.Secret(this, "secret", {
       metadata: {
         name: "main",
       },
-      stringData: {
-        mySecret: "MY SECRET!",
-      },
+      stringData: loadSecretsFile(),
     });
 
-    new KubeService(this, "service", {
-      spec: {
-        type: "ClusterIP",
-        ports: [
-          {
-            port: 3000,
-          },
-        ],
-        selector: label,
+    const webapp = {
+      name: "webapp",
+      image: "my-app-webapp:4",
+      imagePullPolicy: kplus.ImagePullPolicy.IF_NOT_PRESENT,
+      port: 3000,
+      envVariables: {
+        NEXT_PUBLIC_ENVIRONMENT: kplus.EnvValue.fromConfigMap(
+          config,
+          "environment"
+        ),
+        NEXT_PUBLIC_MY_NODE_NAME: kplus.EnvValue.fromFieldRef(
+          kplus.EnvFieldPaths.NODE_NAME
+        ),
+        NEXT_PUBLIC_MY_POD_NAME: kplus.EnvValue.fromFieldRef(
+          kplus.EnvFieldPaths.POD_NAME
+        ),
+        NEXT_PUBLIC_PASSWORD: kplus.EnvValue.fromSecretValue({
+          secret,
+          key: "password",
+        }),
       },
+    };
+
+    const deployment = new kplus.Deployment(this, "deployment", {
+      replicas: 3,
+      containers: [webapp],
     });
 
-    new KubeDeployment(this, "deployment", {
-      spec: {
-        replicas: 3,
-        selector: {
-          matchLabels: label,
-        },
-        template: {
-          metadata: { labels: label },
-          spec: {
-            containers: [
-              {
-                name: "webapp",
-                image: "my-app-webapp:1",
-                ports: [
-                  {
-                    containerPort: 3000,
-                  },
-                ],
-                env: [
-                  {
-                    name: "NEXT_PUBLIC_MY_NODE_NAME",
-                    valueFrom: {
-                      fieldRef: {
-                        fieldPath: "spec.nodeName",
-                      },
-                    },
-                  },
-                  {
-                    name: "NEXT_PUBLIC_MY_POD_NAME",
-                    valueFrom: {
-                      fieldRef: {
-                        fieldPath: "metadata.name",
-                      },
-                    },
-                  },
-                  {
-                    name: "NEXT_PUBLIC_CONFIG_MAP_KEY",
-                    valueFrom: {
-                      configMapKeyRef: {
-                        name: "main",
-                        key: "configmapKey",
-                      },
-                    },
-                  },
-                  {
-                    name: "NEXT_PUBLIC_MY_SECRET",
-                    valueFrom: {
-                      secretKeyRef: {
-                        name: "main",
-                        key: "mySecret",
-                      },
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    });
+    deployment.exposeViaService({ serviceType: kplus.ServiceType.CLUSTER_IP });
   }
 }
 
-const app = new App();
+const app = new cdk8s.App();
 new MyChart(app, "my-app");
 app.synth();
