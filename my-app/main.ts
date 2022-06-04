@@ -24,33 +24,33 @@ export class MyChart extends cdk8s.Chart {
 
     const webapp = {
       name: "webapp",
-      image: "my-app-webapp:4",
+      image: "my-app-webapp:9",
       imagePullPolicy: kplus.ImagePullPolicy.IF_NOT_PRESENT,
       port: 3000,
       envVariables: {
-        NEXT_PUBLIC_ENVIRONMENT: kplus.EnvValue.fromConfigMap(
+        WEBAPP_ENVIRONMENT: kplus.EnvValue.fromConfigMap(
           config,
           "environment"
         ),
-        NEXT_PUBLIC_MY_NODE_NAME: kplus.EnvValue.fromFieldRef(
-          kplus.EnvFieldPaths.NODE_NAME
-        ),
-        NEXT_PUBLIC_MY_POD_NAME: kplus.EnvValue.fromFieldRef(
+        WEBAPP_POD_NAME: kplus.EnvValue.fromFieldRef(
           kplus.EnvFieldPaths.POD_NAME
         ),
-        NEXT_PUBLIC_PASSWORD: kplus.EnvValue.fromSecretValue({
+        WEBAPP_SECRET: kplus.EnvValue.fromSecretValue({
           secret,
-          key: "password",
+          key: "secret",
         }),
       },
     };
 
     const deployment = new kplus.Deployment(this, "deployment", {
+      metadata: {
+        name: "webapp"
+      },
       replicas: 3,
       containers: [webapp],
     });
 
-    deployment.exposeViaService({ serviceType: kplus.ServiceType.CLUSTER_IP });
+    deployment.exposeViaService({ name: "webapp", serviceType: kplus.ServiceType.CLUSTER_IP });
   }
 }
 
