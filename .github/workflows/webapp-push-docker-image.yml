@@ -1,11 +1,11 @@
-name: Push docker image
+name: 'webapp: push docker image'
 
 on:
   push:
     tags:
       - v*
-#    paths:
-#      - webapp/**
+    paths:
+      - webapp/**
 
 defaults:
   run:
