@@ -38,6 +38,8 @@ jobs:
           sudo mv sops /usr/local/bin
 
       - name: Decrypt secrets
+        env:
+          SOPS_AGE_KEY: ${secrets.AGE_KEY}
         run: |
           cd values
           sops -d secrets-staging.enc.env > secrets-staging.env
