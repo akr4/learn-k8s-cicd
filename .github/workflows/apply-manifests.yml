@@ -34,6 +34,7 @@ jobs:
       - name: Install sops
         run: |
           curl -L -o sops https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v${SOPS_VERSION}.linux.amd64
+          chmod 755 sops
           sudo mv sops /usr/local/bin
 
       - name: Decrypt secrets
