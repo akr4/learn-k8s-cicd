@@ -3,7 +3,7 @@ name: Push docker image
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - webapp/**
 
