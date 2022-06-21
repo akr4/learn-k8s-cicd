@@ -1,0 +1,8 @@
+# GitHub Actions age18hvf4rm22dr2yq4ttqp3kqgdwzek2dnutv6jrsn2zpmt5retp3cs8rnl23
+# alice age1jpxds77c9epejvc88wd539xyxvzm7kez7nwx6jcngs4zpfwxae0q2adkz4
+# bob age1kv6vcwhv7lw22nnxxjplehmy88xk5s5umchzr6lugegml0smv3psnnha2t
+creation_rules:
+  - path_regex: .*-production\.enc\.env
+    age: age18hvf4rm22dr2yq4ttqp3kqgdwzek2dnutv6jrsn2zpmt5retp3cs8rnl23,age1jpxds77c9epejvc88wd539xyxvzm7kez7nwx6jcngs4zpfwxae0q2adkz4
+  - path_regex: .*-staging\.enc\.env
+    age: age18hvf4rm22dr2yq4ttqp3kqgdwzek2dnutv6jrsn2zpmt5retp3cs8rnl23,age1jpxds77c9epejvc88wd539xyxvzm7kez7nwx6jcngs4zpfwxae0q2adkz4,age1kv6vcwhv7lw22nnxxjplehmy88xk5s5umchzr6lugegml0smv3psnnha2t

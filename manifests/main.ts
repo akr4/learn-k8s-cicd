@@ -27,7 +27,7 @@ export class MyChart extends cdk8s.Chart {
 
     const webapp = {
       name: "webapp",
-      image: `${DOCKER_REGISTRY}/try-k8s-webapp:9`,
+      image: `${DOCKER_REGISTRY}/akr4/learn-k8s-cicd-webapp:v1.0.0`,
       imagePullPolicy: kplus.ImagePullPolicy.IF_NOT_PRESENT,
       port: 3000,
       envVariables: {
@@ -74,5 +74,5 @@ export class MyChart extends cdk8s.Chart {
 }
 
 const app = new cdk8s.App();
-new MyChart(app, "my-app");
+new MyChart(app, "learn-k8s-cicd");
 app.synth();
