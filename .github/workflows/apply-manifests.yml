@@ -26,12 +26,12 @@ jobs:
 
       - name: Install age
         run: |
-          apt install age
+          sudo apt install age
 
       - name: Install sops
         run: |
           curl -L -o sops https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v${SOPS_VERSION}.linux.amd64
-          mv sops /usr/local/bin
+          sudo mv sops /usr/local/bin
 
   generate-manifest:
     runs-on: ubuntu-latest

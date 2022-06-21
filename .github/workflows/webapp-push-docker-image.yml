@@ -1,4 +1,4 @@
-name: 'webapp: push docker image'
+name: 'Push webapp docker image'
 
 on:
   push:
