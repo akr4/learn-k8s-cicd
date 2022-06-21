@@ -13,7 +13,7 @@ defaults:
     working-directory: manifests
 
 jobs:
-  prepare:
+  generate-manifest:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,18 +26,16 @@ jobs:
 
       - name: Install age
         run: |
-          sudo apt-get update
-          sudo apt-get install -y age
+          curl -L -o age.tar.gz https://dl.filippo.io/age/latest?for=linux/amd64
+          tar xf age.tar.gz
+          sudo mv age/age /usr/local/bin
+          sudo mv age/age-keygen /usr/local/bin
 
       - name: Install sops
         run: |
           curl -L -o sops https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v${SOPS_VERSION}.linux.amd64
           sudo mv sops /usr/local/bin
 
-  generate-manifest:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Decrypt secrets
         run: |
           cd values
