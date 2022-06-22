@@ -4,8 +4,6 @@ import * as kplus from "cdk8s-plus-23";
 import {HttpIngressPathType} from "cdk8s-plus-23";
 import {loadSecretsFile, loadValuesFile} from "./values";
 
-const DOCKER_REGISTRY = process.env.DOCKER_REGISTRY;
-
 export class MyChart extends cdk8s.Chart {
   constructor(scope: Construct, id: string, props: cdk8s.ChartProps = {}) {
     super(scope, id, props);
@@ -27,7 +25,7 @@ export class MyChart extends cdk8s.Chart {
 
     const webapp = {
       name: "webapp",
-      image: `${DOCKER_REGISTRY}/akr4/learn-k8s-cicd-webapp:v1.0.17`,
+      image: 'gcr.io/akr4/learn-k8s-cicd-webapp:v1.0.17',
       imagePullPolicy: kplus.ImagePullPolicy.IF_NOT_PRESENT,
       port: 3000,
       envVariables: {
