@@ -70,6 +70,7 @@ jobs:
         env:
           VALUES_FILE: values/values-staging.env
           SECRETS_FILE: values/secrets-staging.env
+          DOCKER_REGISTRY: gcr.io/k8s-cicd-353408
         run: |
           npm run compile
           npm run synth
