@@ -24,6 +24,10 @@ jobs:
         run: |
           npm i -g cdk8s-cli
 
+      - name: Install npm dependencies
+        run: |
+          npm ci
+
       - name: Install age
         run: |
           curl -L -o age.tar.gz https://dl.filippo.io/age/latest?for=linux/amd64
