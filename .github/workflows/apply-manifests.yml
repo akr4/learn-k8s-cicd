@@ -7,8 +7,8 @@ on:
 
 env:
   SOPS_VERSION: 3.7.3
-  GOOGLE_PROJECT: k8s-cicd
-  GOOGLE_ZONE: asia-northeast1-a
+  GCP_PROJECT: k8s-cicd-353408
+  GCP_ZONE: asia-northeast1-a
 
 defaults:
   run:
@@ -45,18 +45,18 @@ jobs:
           chmod 755 sops
           sudo mv sops /usr/local/bin
 
-      - id: auth
+      - name: Login to GCP
         uses: google-github-actions/auth@ceee102ec2387dd9e844e01b530ccd4ec87ce955 # v0.8.0
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Set up Cloud SDK
+      - name: Set up GCP Cloud SDK
         uses: google-github-actions/setup-gcloud@877d4953d2c70a0ba7ef3290ae968eb24af233bb # v0.6.0
 
       - name: Setup GCP project
         run: |
-          gcloud config set project ${GOOGLE_PROJECT}
-          gcloud config set compute/zone ${GOOGLE_ZONE}
+          gcloud config set project ${GCP_PROJECT}
+          gcloud config set compute/zone ${GCP_ZONE}
           gcloud container clusters get-credentials main
 
       - name: Install kubectl
