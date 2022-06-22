@@ -53,15 +53,14 @@ jobs:
       - name: Set up GCP Cloud SDK
         uses: google-github-actions/setup-gcloud@877d4953d2c70a0ba7ef3290ae968eb24af233bb # v0.6.0
 
-      - name: Setup GCP project
-        run: |
-          gcloud config set project ${GCP_PROJECT}
-          gcloud config set compute/zone ${GCP_ZONE}
-          gcloud container clusters get-credentials main
+      - name: Set up GKE credentials
+        uses: google-github-actions/get-gke-credentials@0a5f57b989b81d2725178cda257a00acf7d6bb5f # 0.7.0
+        with:
+          cluster_name: main
 
-      - name: Install kubectl
-        run: |
-          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+#      - name: Install kubectl
+#        run: |
+#          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 
       - name: Decrypt secrets
         env:
@@ -82,6 +81,6 @@ jobs:
         run: |
           rm values/secrets-staging.env
 
-      - name: apply manifests
+      - name: Apply manifests
         run: |
           kubectl apply -f dist/
