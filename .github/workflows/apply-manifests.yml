@@ -57,6 +57,7 @@ jobs:
         uses: google-github-actions/get-gke-credentials@0a5f57b989b81d2725178cda257a00acf7d6bb5f # 0.7.0
         with:
           cluster_name: main
+          location: ${{ env.GCP_ZONE }}
 
 #      - name: Install kubectl
 #        run: |
