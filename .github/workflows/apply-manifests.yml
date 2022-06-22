@@ -45,8 +45,12 @@ jobs:
           sops -d secrets-staging.enc.env > secrets-staging.env
 
       - name: Generate manifests
+        env:
+          VALUES_FILE: values/values-staging.env
+          SECRETS_FILE: values/secrets-staging.env
         run: |
-          VALUES_FILE=values/values-staging.env SECRETS_FILE=values/secrets-staging.env cdk8s synth
+          npm run compile
+          npm run synth
 
       - name: Clear secrets
         run: |
