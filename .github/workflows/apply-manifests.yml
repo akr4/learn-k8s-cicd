@@ -50,7 +50,7 @@ jobs:
           SECRETS_FILE: values/secrets-staging.env
         run: |
           npm run compile
-          cdk8s synth
+          npm run synth
 
       - name: Clear secrets
         run: |
