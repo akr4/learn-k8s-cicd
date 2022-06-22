@@ -39,9 +39,8 @@ jobs:
 
       - name: Decrypt secrets
         env:
-          SOPS_AGE_KEY: ${secrets.AGE_KEY}
+          SOPS_AGE_KEY: ${{ secrets.AGE_KEY }}
         run: |
-          echo ${SOPS_AGE_KEY}
           cd values
           sops -d secrets-staging.enc.env > secrets-staging.env
 
