@@ -3,9 +3,9 @@
 k8s の学習を兼ねて Kubernetes で CI/CD パイプラインを実装してみる。
 
 - GCP を使う
-- プロジェクト名 `k8s-cicd`
+- SOPS と age で秘密情報を暗号化、CI/CD ワークフロー内で複合化する
 
-## セットアップ
+## 準備
 
 ```bash
 # クラスター作成
@@ -14,8 +14,6 @@ gcloud container clusters create main --addons HttpLoadBalancing,HorizontalPodAu
 # Artifact Registory にリポジトリを作成
 gcloud artifacts repositories create main --repository-format=docker --location=asia-northeast1
 ```
-
-
 
 ## 終了
 
