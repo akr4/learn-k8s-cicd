@@ -25,7 +25,7 @@ export class MyChart extends cdk8s.Chart {
 
     const webapp = {
       name: "webapp",
-      image: 'gcr.io/akr4/learn-k8s-cicd-webapp:v1.0.17',
+      image: 'asia-northeast1-docker.pkg.dev/k8s-cicd-353408/webapp:v1.0.0',
       imagePullPolicy: kplus.ImagePullPolicy.IF_NOT_PRESENT,
       port: 3000,
       envVariables: {
