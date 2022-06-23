@@ -5,6 +5,27 @@ k8s の学習を兼ねて Kubernetes で CI/CD パイプラインを実装して
 - GCP を使う
 - プロジェクト名 `k8s-cicd`
 
+## セットアップ
+
+```bash
+# クラスター作成
+gcloud container clusters create main --addons HttpLoadBalancing,HorizontalPodAutoscaling,NetworkPolicy
+
+# Artifact Registory にリポジトリを作成
+gcloud artifacts repositories create webapp --repository-format=docker --location=asia-northeast1
+```
+
+
+
+## 終了
+
+```bash
+# クラスター削除
+gcloud container clusters delete main
+```
+
+
+
 ## TODO
 
 - [ ] GCP のサービスアカウントの権限を限定する
@@ -12,9 +33,9 @@ k8s の学習を兼ねて Kubernetes で CI/CD パイプラインを実装して
 - [ ] 複数環境へのデプロイ
 - [ ] EKS
 
-## ワークフロー
+## ワークフロー (案)
 
-### コンテナビルド
+### リリース用コンテナビルド
 
 - `v*` のタグがついている場合にコンテナのビルドを行いそのタグをつける
 - ステージング環境とプロダクション環境で利用する
