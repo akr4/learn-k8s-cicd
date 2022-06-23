@@ -61,7 +61,6 @@ export class MyChart extends cdk8s.Chart {
       },
       rules: [
         {
-          host: 'webapp.local',
           path: '/',
           pathType: HttpIngressPathType.PREFIX,
           backend: kplus.IngressBackend.fromService(service),
