@@ -12,7 +12,7 @@ k8s の学習を兼ねて Kubernetes で CI/CD パイプラインを実装して
 gcloud container clusters create main --addons HttpLoadBalancing,HorizontalPodAutoscaling,NetworkPolicy
 
 # Artifact Registory にリポジトリを作成
-gcloud artifacts repositories create webapp --repository-format=docker --location=asia-northeast1
+gcloud artifacts repositories create main --repository-format=docker --location=asia-northeast1
 ```
 
 
