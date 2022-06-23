@@ -3,7 +3,7 @@
 k8s の学習を兼ねて Kubernetes で CI/CD パイプラインを実装してみる。
 
 - GCP を使う
-- SOPS と age で秘密情報を暗号化、CI/CD ワークフロー内で複合化する
+- SOPS と age で秘密情報を暗号化、CI/CD ワークフロー内で複号化する
 
 ## 準備
 
@@ -20,6 +20,9 @@ gcloud artifacts repositories create main --repository-format=docker --location=
 ```bash
 # クラスター削除
 gcloud container clusters delete main
+
+# Artifact Registry のリポジトリを削除
+gcloud artifacts repositories delete main --location=asia-northeast1
 ```
 
 
